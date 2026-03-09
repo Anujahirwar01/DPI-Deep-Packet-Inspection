@@ -23,7 +23,7 @@ export default function Sessions() {
   const fetchSessions = async () => {
     try {
       const res = await getSessions();
-      setSessions(res.data);
+      setSessions(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -189,8 +189,8 @@ export default function Sessions() {
                         <span style={{
                           color: s.status === 'completed' ? 'var(--success)'
                             : s.status === 'failed' ? 'var(--danger)'
-                            : s.status === 'processing' ? 'var(--warn)'
-                            : 'var(--text-muted)',
+                              : s.status === 'processing' ? 'var(--warn)'
+                                : 'var(--text-muted)',
                           fontSize: '0.7rem',
                           fontFamily: 'Space Mono',
                           textTransform: 'uppercase',

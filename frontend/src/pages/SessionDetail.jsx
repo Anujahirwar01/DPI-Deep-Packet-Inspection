@@ -88,9 +88,9 @@ export default function SessionDetail() {
       if (packetFilter.appType) params.appType = packetFilter.appType;
       if (packetFilter.blocked) params.blocked = packetFilter.blocked;
       const res = await getPackets(params);
-      setPackets(res.data.packets);
-      setPacketTotal(res.data.total);
-      setPacketPages(res.data.pages);
+      setPackets(Array.isArray(res.data.packets) ? res.data.packets : []);
+      setPacketTotal(res.data.total || 0);
+      setPacketPages(res.data.pages || 1);
     } catch (err) { console.error(err); }
     finally { setPacketsLoading(false); }
   }, [id, packetPage, packetFilter]);
@@ -100,8 +100,8 @@ export default function SessionDetail() {
     setFlowsLoading(true);
     try {
       const res = await getFlows({ sessionId: id, page: flowPage, limit: 50 });
-      setFlows(res.data.flows);
-      setFlowTotal(res.data.total);
+      setFlows(Array.isArray(res.data.flows) ? res.data.flows : []);
+      setFlowTotal(res.data.total || 0);
     } catch (err) { console.error(err); }
     finally { setFlowsLoading(false); }
   }, [id, flowPage]);
@@ -109,10 +109,10 @@ export default function SessionDetail() {
   // Load analytics
   useEffect(() => {
     if (!session || session.status !== 'completed') return;
-    getPacketAppBreakdown(id).then((r) => setAppBreakdown(r.data)).catch(console.error);
-    getTopTalkers(id).then((r) => setTopTalkers(r.data)).catch(console.error);
-    getTimeline(id).then((r) => setTimeline(r.data)).catch(console.error);
-    getProtocolBreakdown(id).then((r) => setProtocolBreakdown(r.data)).catch(console.error);
+    getPacketAppBreakdown(id).then((r) => setAppBreakdown(Array.isArray(r.data) ? r.data : [])).catch(console.error);
+    getTopTalkers(id).then((r) => setTopTalkers(Array.isArray(r.data) ? r.data : [])).catch(console.error);
+    getTimeline(id).then((r) => setTimeline(Array.isArray(r.data) ? r.data : [])).catch(console.error);
+    getProtocolBreakdown(id).then((r) => setProtocolBreakdown(Array.isArray(r.data) ? r.data : [])).catch(console.error);
   }, [id, session?.status]);
 
   useEffect(() => { if (activeTab === 'Packets') loadPackets(); }, [activeTab, packetPage, packetFilter]);

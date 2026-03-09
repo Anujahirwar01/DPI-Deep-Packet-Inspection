@@ -37,7 +37,8 @@ export default function Dashboard() {
     Promise.all([getOverviewStats(), getSessions()])
       .then(([ovRes, sessRes]) => {
         setOverview(ovRes.data);
-        setRecentSessions(sessRes.data.slice(0, 5));
+        const sessions = Array.isArray(sessRes.data) ? sessRes.data : [];
+        setRecentSessions(sessions.slice(0, 5));
       })
       .catch(console.error)
       .finally(() => setLoading(false));

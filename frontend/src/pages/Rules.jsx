@@ -29,7 +29,7 @@ export default function Rules() {
   const fetchRules = async () => {
     try {
       const res = await getRules();
-      setRules(res.data);
+      setRules(Array.isArray(res.data) ? res.data : []);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
