@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_URL || '/api';
+// Falls back to Render backend if env var not set at build time
+const API_BASE = process.env.REACT_APP_API_URL || 'https://dpi-deep-packet-inspection.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE,

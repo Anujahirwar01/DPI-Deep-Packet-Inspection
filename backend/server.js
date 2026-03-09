@@ -7,7 +7,16 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://dpi-deep-packet-inspection.vercel.app',
+    /\.vercel\.app$/,
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
